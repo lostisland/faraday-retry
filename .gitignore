@@ -1,0 +1,17 @@
+.idea/
+.bundle/
+.yardoc
+_yardoc/
+coverage/
+doc/
+pkg/
+spec/reports/
+tmp/
+
+*.gem
+Gemfile.lock
+
+.rvmrc
+.ruby-version
+
+.rspec_status
