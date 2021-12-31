@@ -4,7 +4,7 @@
 [![Gem](https://img.shields.io/gem/v/faraday-retry.svg?style=flat-square)](https://rubygems.org/gems/faraday-retry)
 [![License](https://img.shields.io/github/license/lostisland/faraday-retry.svg?style=flat-square)](LICENSE.md)
 
-CatcThe `Retry` middleware automatically retries requests that fail due to intermittent client
+The `Retry` middleware automatically retries requests that fail due to intermittent client
 or server errors (such as network hiccups).
 By default, it retries 2 times and handles only timeout exceptions.
 It can be configured with an arbitrary number of retries, a list of exceptions to handle,
