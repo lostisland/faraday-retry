@@ -95,16 +95,16 @@ RSpec.describe Faraday::Retry::Middleware do
         expect(retry_block_times_called).to eq(2)
       end
 
-      it "has appropriate args to retry_block" do
-        expect(retry_block_calls.first[:exception]).to be_kind_of(Errno::ETIMEDOUT)
-        expect(retry_block_calls.first[:options]).to be_kind_of(Faraday::Options)
-        expect(retry_block_calls.first[:env]).to be_kind_of(Faraday::Env)
-        expect(retry_block_calls.first[:retry_count]).to be_kind_of(Integer)
-        expect(retry_block_calls.first[:retry_count]).to eq 0
+      describe 'with arguments to retry_block' do
+        it { expect(retry_block_calls.first[:exception]).to be_kind_of(Errno::ETIMEDOUT) }
+        it { expect(retry_block_calls.first[:options]).to be_kind_of(Faraday::Options) }
+        it { expect(retry_block_calls.first[:env]).to be_kind_of(Faraday::Env) }
+        it { expect(retry_block_calls.first[:retry_count]).to be_kind_of(Integer) }
+        it { expect(retry_block_calls.first[:retry_count]).to eq 0 }
       end
 
-      it "increments retry_count" do
-        expect(retry_block_calls[1][:retry_count]).to eq 1
+      describe 'arguments to retry_block on second call' do
+        it { expect(retry_block_calls[1][:retry_count]).to eq 1 }
       end
     end
   end
