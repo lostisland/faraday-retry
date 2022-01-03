@@ -127,15 +127,19 @@ retry_options = {
 
 ### Call a block on every retry
 
-You can specify a block through the `retry_block` option that will be called before every retry.
-There are many different applications for this feature, spacing from instrumentation to monitoring.
-Request environment, middleware options, current number of retries and the exception is passed to the block as parameters.
+You can specify a proc object through the `retry_block` option that will be called before every
+retry, before  There are many different applications for this feature, spacing from instrumentation to monitoring.
+
+
+The block is passed keyword arguments with contextual information: Request environment, middleware options, current number of retries, exception, and amount of time we will wait before retrying. (retry_block is called before the wait time happens)
+
+
 For example, you might want to keep track of the response statuses:
 
 ```ruby
 response_statuses = []
 retry_options = {
-  retry_block: -> (env, options, retries, exc) { response_statuses << env.status }
+  retry_block: -> (env:, options:, retries_remaining:, exception:, will_retry_in:) { response_statuses << env.status }
 }
 ```
 

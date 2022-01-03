@@ -87,12 +87,20 @@ RSpec.describe Faraday::Retry::Middleware do
     end
 
     context 'and retry_block is set' do
-      let(:options) { [{ retry_block: ->(env, options, retries, exc) { retry_block_calls << [env, options, retries, exc] } }] }
+      let(:options) { [{ retry_block: ->(**kwargs) { retry_block_calls << kwargs } }] }
       let(:retry_block_calls) { [] }
       let(:retry_block_times_called) { retry_block_calls.size }
 
       it 'calls retry block for each retry' do
         expect(retry_block_times_called).to eq(2)
+      end
+
+      it "has appropriate args to retry_block" do
+        expect(retry_block_calls.first[:exception]).to be_kind_of(Errno::ETIMEDOUT)
+        expect(retry_block_calls.first[:options]).to be_kind_of(Faraday::Options)
+        expect(retry_block_calls.first[:env]).to be_kind_of(Faraday::Env)
+        expect(retry_block_calls.first[:will_retry_in]).to be_kind_of(Float)
+        expect(retry_block_calls.first[:retries_remaining]).to eq 1
       end
     end
   end
@@ -263,7 +271,7 @@ RSpec.describe Faraday::Retry::Middleware do
       context 'and retry_block is set' do
         let(:options) do
           [{
-            retry_block: ->(env, options, retries, exc) { retry_block_calls << [env, options, retries, exc] },
+            retry_block: ->(**kwargs) { retry_block_calls << kwargs },
             max: 2,
             max_interval: 5,
             retry_statuses: 504

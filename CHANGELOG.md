@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.0
+
+### Changed
+
+* retry_block now takes keyword arguments instead of positional (backwards incompatible)
+
+### Added
+
+* retry_block has additional `will_retry_in` argument with upcoming delay before retry in seconds.
+
 ## v1.0
 
 Initial release.
