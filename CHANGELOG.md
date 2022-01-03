@@ -5,6 +5,7 @@
 ### Changed
 
 * retry_block now takes keyword arguments instead of positional (backwards incompatible)
+* retry_block `retry_count` arg now counts up from 0, instead of old `retries_remaining`
 
 ### Added
 

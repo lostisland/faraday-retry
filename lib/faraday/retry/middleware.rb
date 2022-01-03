@@ -108,8 +108,7 @@ module Faraday
       #   every retry. The block will be yielded keyword arguments:
       #     * env [Faraday::Env]: Request environment
       #     * options [Faraday::Options]: middleware options
-      #     * retries_remaining [Integer]: how many more possible retries are
-      #       remaining
+      #     * retry_count [Integer]: how many retries have already occured (starts at 0)
       #     * exception [Exception]: exception that triggered the retry,
       #       will be the synthetic `Faraday::RetriableResponse` if the
       #       retry was triggered by something other than an exception.
@@ -157,7 +156,7 @@ module Faraday
               @options.retry_block.call(
                 env: env,
                 options: @options,
-                retries_remaining: retries,
+                retry_count: @options.max - (retries + 1),
                 exception: e,
                 will_retry_in: sleep_amount
               )
