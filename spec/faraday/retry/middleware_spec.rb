@@ -118,7 +118,7 @@ RSpec.describe Faraday::Retry::Middleware do
   describe '#calculate_retry_interval' do
     context 'with exponential backoff' do
       let(:options) { { max: 5, interval: 0.1, backoff_factor: 2 } }
-      let(:middleware) { Faraday::Request::Retry.new(nil, options) }
+      let(:middleware) { described_class.new(nil, options) }
 
       it { expect(middleware.send(:calculate_retry_interval, 5)).to eq(0.1) }
       it { expect(middleware.send(:calculate_retry_interval, 4)).to eq(0.2) }
@@ -127,7 +127,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
     context 'with exponential backoff and max_interval' do
       let(:options) { { max: 5, interval: 0.1, backoff_factor: 2, max_interval: 0.3 } }
-      let(:middleware) { Faraday::Request::Retry.new(nil, options) }
+      let(:middleware) { described_class.new(nil, options) }
 
       it { expect(middleware.send(:calculate_retry_interval, 5)).to eq(0.1) }
       it { expect(middleware.send(:calculate_retry_interval, 4)).to eq(0.2) }
@@ -137,7 +137,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
     context 'with exponential backoff and interval_randomness' do
       let(:options) { { max: 2, interval: 0.1, interval_randomness: 0.05 } }
-      let(:middleware) { Faraday::Request::Retry.new(nil, options) }
+      let(:middleware) { described_class.new(nil, options) }
 
       it { expect(middleware.send(:calculate_retry_interval, 2)).to be_between(0.1, 0.105) }
     end
@@ -177,7 +177,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
     it 'FilePart: should rewind files on retry' do
       io = StringIO.new('Test data')
-      filepart = Faraday::FilePart.new(io, 'application/octet/stream')
+      filepart = Faraday::Multipart::FilePart.new(io, 'application/octet/stream')
 
       rewound = 0
       rewind = -> { rewound += 1 }
@@ -191,7 +191,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
     it 'UploadIO: should rewind files on retry' do
       io = StringIO.new('Test data')
-      upload_io = Faraday::FilePart.new(io, 'application/octet/stream')
+      upload_io = Faraday::Multipart::FilePart.new(io, 'application/octet/stream')
 
       rewound = 0
       rewind = -> { rewound += 1 }

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'faraday'
+require 'faraday/multipart'
 require_relative '../lib/faraday/retry'
 
 RSpec.configure do |config|

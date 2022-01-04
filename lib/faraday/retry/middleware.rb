@@ -190,6 +190,7 @@ module Faraday
       end
 
       def rewind_files(body)
+        return unless defined?(UploadIO)
         return unless body.is_a?(Hash)
 
         body.each do |_, value|
