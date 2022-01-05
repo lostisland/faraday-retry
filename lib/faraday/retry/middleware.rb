@@ -105,8 +105,16 @@ module Faraday
       #   if the exception produced is non-recoverable or if the
       #   the HTTP method called is not idempotent.
       # @option options [Block] :retry_block block that is executed before
-      #   every retry. Request environment, middleware options, current number
-      #   of retries and the exception is passed to the block as parameters.
+      #   every retry. The block will be yielded keyword arguments:
+      #     * env [Faraday::Env]: Request environment
+      #     * options [Faraday::Options]: middleware options
+      #     * retry_count [Integer]: how many retries have already occured (starts at 0)
+      #     * exception [Exception]: exception that triggered the retry,
+      #       will be the synthetic `Faraday::RetriableResponse` if the
+      #       retry was triggered by something other than an exception.
+      #     * will_retry_in [Float]: retry_block is called *before* the retry
+      #       delay, actual retry will happen in will_retry_in number of
+      #       seconds.
       # @option options [Array] :retry_statuses Array of Integer HTTP status
       #   codes or a single Integer value that determines whether to raise
       #   a Faraday::RetriableResponse exception based on the HTTP status code
@@ -145,7 +153,13 @@ module Faraday
             retries -= 1
             rewind_files(request_body)
             if (sleep_amount = calculate_sleep_amount(retries + 1, env))
-              @options.retry_block.call(env, @options, retries, e)
+              @options.retry_block.call(
+                env: env,
+                options: @options,
+                retry_count: @options.max - (retries + 1),
+                exception: e,
+                will_retry_in: sleep_amount
+              )
               sleep sleep_amount
               retry
             end
