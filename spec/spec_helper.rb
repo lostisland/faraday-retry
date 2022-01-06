@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'faraday'
-require 'faraday/multipart'
+require 'faraday/multipart' if Faraday::VERSION[0].to_i >= 2
 require_relative '../lib/faraday/retry'
 
 RSpec.configure do |config|

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'faraday'
 require_relative 'retriable_response'
 require_relative 'retry/middleware'
 require_relative 'retry/version'
