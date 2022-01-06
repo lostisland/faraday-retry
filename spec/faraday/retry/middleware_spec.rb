@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+PartClass = if defined?(Faraday::Multipart::FilePart)
+              Faraday::Multipart::FilePart
+            else
+              Faraday::FilePart
+            end
+
 RSpec.describe Faraday::Retry::Middleware do
   let(:calls) { [] }
   let(:times_called) { calls.size }
@@ -177,7 +183,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
     it 'FilePart: should rewind files on retry' do
       io = StringIO.new('Test data')
-      filepart = Faraday::Multipart::FilePart.new(io, 'application/octet/stream')
+      filepart = PartClass.new(io, 'application/octet/stream')
 
       rewound = 0
       rewind = -> { rewound += 1 }
@@ -191,7 +197,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
     it 'UploadIO: should rewind files on retry' do
       io = StringIO.new('Test data')
-      upload_io = Faraday::Multipart::FilePart.new(io, 'application/octet/stream')
+      upload_io = PartClass.new(io, 'application/octet/stream')
 
       rewound = 0
       rewind = -> { rewound += 1 }
