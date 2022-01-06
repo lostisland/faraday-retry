@@ -71,7 +71,7 @@ module Faraday
         end
 
         def retry_block
-          self[:retry_block] ||= proc {}
+          self[:retry_block] ||= proc {} # rubocop:disable Lint/EmptyBlock
         end
 
         def retry_statuses
