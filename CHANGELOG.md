@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-* Support for the RateLimit-Reset header in PR #9.
+* Support for the RateLimit-Reset header in PR #9. Thanks, @maxprokopiev!
 
 ## v2.0
 
