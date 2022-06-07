@@ -245,8 +245,15 @@ RSpec.describe Faraday::Retry::Middleware do
       conn.get('/unstable')
     end
 
-    context 'when retry_after bigger than interval' do
-      let(:headers) { { 'Retry-After' => '0.5' } }
+    context 'when Retry-After bigger than RateLimit-Reset' do
+      let(:headers) { { 'Retry-After' => '0.5', 'RateLimit-Reset' => '0.1' } }
+      let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504 }] }
+
+      it { expect(elapsed).to be > 0.5 }
+    end
+
+    context 'when RateLimit-Reset bigger than Retry-After' do
+      let(:headers) { { 'Retry-After' => '0.1', 'RateLimit-Reset' => '0.5' } }
       let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504 }] }
 
       it { expect(elapsed).to be > 0.5 }
@@ -257,6 +264,13 @@ RSpec.describe Faraday::Retry::Middleware do
       let(:options) { [{ max: 1, interval: 0.2, retry_statuses: 504 }] }
 
       it { expect(elapsed).to be > 0.2 }
+    end
+
+    context 'when RateLimit-Reset is a timestamp' do
+      let(:headers) { { 'Retry-After' => '0.1', 'RateLimit-Reset' => (Time.now.utc + 2).strftime('%a, %d %b %Y %H:%M:%S GMT') } }
+      let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504 }] }
+
+      it { expect(elapsed).to be > 1 }
     end
 
     context 'when retry_after is a timestamp' do

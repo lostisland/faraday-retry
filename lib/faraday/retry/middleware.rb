@@ -126,7 +126,7 @@ module Faraday
       end
 
       def calculate_sleep_amount(retries, env)
-        retry_after = calculate_retry_after(env)
+        retry_after = [calculate_retry_after(env), calculate_rate_limit_reset(env)].compact.max
         retry_interval = calculate_retry_interval(retries)
 
         return if retry_after && retry_after > @options.max_interval
@@ -212,21 +212,16 @@ module Faraday
         end
       end
 
+      # RFC for RateLimit Header Fields for HTTP:
+      # https://tools.ietf.org/id/draft-polli-ratelimit-headers-00.html#rfc.section.3.3
+      def calculate_rate_limit_reset(env)
+        parse_retry_header(env, 'RateLimit-Reset')
+      end
+
       # MDN spec for Retry-After header:
       # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
       def calculate_retry_after(env)
-        response_headers = env[:response_headers]
-        return unless response_headers
-
-        retry_after_value = env[:response_headers]['Retry-After']
-
-        # Try to parse date from the header value
-        begin
-          datetime = DateTime.rfc2822(retry_after_value)
-          datetime.to_time - Time.now.utc
-        rescue ArgumentError
-          retry_after_value.to_f
-        end
+        parse_retry_header(env, 'Retry-After')
       end
 
       def calculate_retry_interval(retries)
@@ -238,6 +233,21 @@ module Faraday
                           @options.interval
 
         current_interval + random_interval
+      end
+
+      def parse_retry_header(env, header)
+        response_headers = env[:response_headers]
+        return unless response_headers
+
+        retry_after_value = env[:response_headers][header]
+
+        # Try to parse date from the header value
+        begin
+          datetime = DateTime.rfc2822(retry_after_value)
+          datetime.to_time - Time.now.utc
+        rescue ArgumentError
+          retry_after_value.to_f
+        end
       end
     end
   end
