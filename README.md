@@ -96,11 +96,14 @@ retry_options = {
 }
 ```
 
-#### Automatically handle the `Retry-After` header
+#### Automatically handle the `Retry-After` and `RateLimit-Reset` headers
 
-Some APIs, like the [Slack API](https://api.slack.com/docs/rate-limits), will inform you when you reach their API limits by replying with a response status code of `429` and a response header of `Retry-After` containing a time in seconds. You should then only retry querying after the amount of time provided by the `Retry-After` header, otherwise you won't get a response.
+Some APIs, like the [Slack API](https://api.slack.com/docs/rate-limits), will inform you when you reach their API limits by replying with a response status code of `429`
+and a response header of `Retry-After` containing a time in seconds. You should then only retry querying after the amount of time provided by the `Retry-After` header,
+otherwise you won't get a response. Other APIs communicate their rate limits via the [RateLimit-xxx](https://tools.ietf.org/id/draft-polli-ratelimit-headers-00.html#rfc.section.3.3) headers
+where `RateLimit-Reset` behaves similarly to the `Retry-After`.
 
-You can automatically handle this and have Faraday pause and retry for the right amount of time by including the `429` status code in the retry statuses list:
+You can automatically handle both headers and have Faraday pause and retry for the right amount of time by including the `429` status code in the retry statuses list:
 
 ```ruby
 retry_options = {
