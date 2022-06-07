@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Support for the RateLimit-Reset header in PR #9.
+
 ## v2.0
 
 ### Changed
