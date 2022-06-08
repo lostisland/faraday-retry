@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-* Support for the RateLimit-Reset header in PR #9. Thanks, @maxprokopiev!
+* Support for the `RateLimit-Reset` header. [PR #9](https://github.com/lostisland/faraday-retry/pull/9). Thanks, [@maxprokopiev]!
 
 ## v2.0
 
@@ -23,3 +23,5 @@ This release consists of the same middleware that was previously bundled with Fa
 ### Fixed
 
 *  Retry middleware `retry_block` is not called if retry will not happen due to `max_interval`, https://github.com/lostisland/faraday/pull/1350
+
+[@maxprokopiev]: https://github.com/maxprokopiev
