@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
     'changelog_uri' => "#{github_uri}/blob/v#{spec.version}/CHANGELOG.md",
     'documentation_uri' => "http://www.rubydoc.info/gems/#{spec.name}/#{spec.version}",
     'homepage_uri' => spec.homepage,
-    'source_code_uri' => github_uri,
+    'source_code_uri' => github_uri
   }
 
   spec.files = Dir['lib/**/*', 'README.md', 'LICENSE.md', 'CHANGELOG.md']
