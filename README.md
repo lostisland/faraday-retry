@@ -147,8 +147,9 @@ Then, run `bin/test` to run the tests.
 
 To install this gem onto your local machine, run `rake build`.
 
-To release a new version, make a commit with a message such as "Bumped to 0.0.2" and then run `rake release`.
-See how it works [here](https://bundler.io/guides/creating_gem.html#releasing-the-gem).
+### Releasing a new version
+
+To release a new version, make a commit with a message such as "Bumped to 0.0.2", and change the _Unreleased_ heading in `CHANGELOG.md` to a heading like "0.0.2 (2022-01-01)", and then use GitHub Releases to author a release. A GitHub Actions workflow then publishes a new gem to [RubyGems.org](https://rubygems.org/gems/faraday-retry).
 
 ## Contributing
 
