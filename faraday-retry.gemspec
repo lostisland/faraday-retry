@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
     'documentation_uri' => "http://www.rubydoc.info/gems/#{spec.name}/#{spec.version}",
     'homepage_uri' => spec.homepage,
     'source_code_uri' => github_uri,
-    'wiki_uri' => "#{github_uri}/wiki"
   }
 
   spec.files = Dir['lib/**/*', 'README.md', 'LICENSE.md', 'CHANGELOG.md']
