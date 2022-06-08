@@ -1,19 +1,16 @@
 # Changelog
 
-## Unreleased
-
-* Support for the `RateLimit-Reset` header. [PR #9](https://github.com/lostisland/faraday-retry/pull/9). Thanks, [@maxprokopiev]!
-
-## v2.0
+## v2.0.0 (2022-06-08)
 
 ### Changed
 
-* retry_block now takes keyword arguments instead of positional (backwards incompatible)
-* retry_block `retry_count` arg now counts up from 0, instead of old `retries_remaining`
+* `retry_block` now takes keyword arguments instead of positional (backwards incompatible)
+* `retry_block`'s `retry_count` argument now counts up from 0, instead of old `retries_remaining`
 
 ### Added
 
-* retry_block has additional `will_retry_in` argument with upcoming delay before retry in seconds.
+* Support for the `RateLimit-Reset` header. [PR #9](https://github.com/lostisland/faraday-retry/pull/9). Thanks, [@maxprokopiev]!
+* `retry_block` has additional `will_retry_in` argument with upcoming delay before retry in seconds.
 
 ## v1.0
 
