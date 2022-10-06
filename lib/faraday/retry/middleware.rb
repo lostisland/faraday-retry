@@ -26,7 +26,8 @@ module Faraday
                                            :interval_randomness,
                                            :backoff_factor, :exceptions,
                                            :methods, :retry_if, :retry_block,
-                                           :retry_statuses)
+                                           :retry_statuses, :rate_limit_retry_header,
+                                           :rate_limit_reset_header)
 
         DEFAULT_CHECK = ->(_env, _exception) { false }
 
@@ -215,13 +216,15 @@ module Faraday
       # RFC for RateLimit Header Fields for HTTP:
       # https://tools.ietf.org/id/draft-polli-ratelimit-headers-00.html#rfc.section.3.3
       def calculate_rate_limit_reset(env)
-        parse_retry_header(env, 'RateLimit-Reset')
+        reset_header = @options.rate_limit_reset_header || 'RateLimit-Reset'
+        parse_retry_header(env, reset_header)
       end
 
       # MDN spec for Retry-After header:
       # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
       def calculate_retry_after(env)
-        parse_retry_header(env, 'Retry-After')
+        retry_header = @options.rate_limit_retry_header || 'Retry-After'
+        parse_retry_header(env, retry_header)
       end
 
       def calculate_retry_interval(retries)
