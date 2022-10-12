@@ -27,19 +27,19 @@ RSpec.describe Faraday::Retry::Middleware do
 
     it { expect(times_called).to eq(1) }
 
-    context 'and this is passed as a custom exception' do
+    context 'when this is passed as a custom exception' do
       let(:options) { [{ exceptions: StandardError }] }
 
       it { expect(times_called).to eq(3) }
     end
 
-    context 'and this is passed as a string custom exception' do
+    context 'when this is passed as a string custom exception' do
       let(:options) { [{ exceptions: 'StandardError' }] }
 
       it { expect(times_called).to eq(3) }
     end
 
-    context 'and a non-existent string custom exception is passed' do
+    context 'when a non-existent string custom exception is passed' do
       let(:options) { [{ exceptions: 'WrongStandardErrorNotExisting' }] }
 
       it { expect(times_called).to eq(1) }
@@ -56,37 +56,37 @@ RSpec.describe Faraday::Retry::Middleware do
 
     it { expect(times_called).to eq(3) }
 
-    context 'and legacy max_retry set to 1' do
+    context 'when legacy max_retry set to 1' do
       let(:options) { [1] }
 
       it { expect(times_called).to eq(2) }
     end
 
-    context 'and legacy max_retry set to -9' do
+    context 'when legacy max_retry set to -9' do
       let(:options) { [-9] }
 
       it { expect(times_called).to eq(1) }
     end
 
-    context 'and new max_retry set to 3' do
+    context 'when new max_retry set to 3' do
       let(:options) { [{ max: 3 }] }
 
       it { expect(times_called).to eq(4) }
     end
 
-    context 'and new max_retry set to -9' do
+    context 'when new max_retry set to -9' do
       let(:options) { [{ max: -9 }] }
 
       it { expect(times_called).to eq(1) }
     end
 
-    context 'and both max_retry and interval are set' do
+    context 'when both max_retry and interval are set' do
       let(:options) { [{ max: 2, interval: 0.1 }] }
 
       it { expect(Time.now - @started).to be_within(0.04).of(0.2) }
     end
 
-    context 'and retry_block is set' do
+    context 'when retry_block is set' do
       let(:options) { [{ retry_block: ->(**kwargs) { retry_block_calls << kwargs } }] }
       let(:retry_block_calls) { [] }
       let(:retry_block_times_called) { retry_block_calls.size }
@@ -114,13 +114,13 @@ RSpec.describe Faraday::Retry::Middleware do
 
     before { conn.get('/unstable') }
 
-    context 'and response code is in retry_statuses' do
+    context 'when response code is in retry_statuses' do
       let(:callback) { -> { [429, {}, ''] } }
 
       it { expect(times_called).to eq(2) }
     end
 
-    context 'and response code is not in retry_statuses' do
+    context 'when response code is not in retry_statuses' do
       let(:callback) { -> { [503, {}, ''] } }
 
       it { expect(times_called).to eq(1) }
@@ -172,7 +172,7 @@ RSpec.describe Faraday::Retry::Middleware do
       @check = ->(_, _) { true }
       expect { conn.post('/unstable', body) }.to raise_error(Errno::ETIMEDOUT)
       expect(times_called).to eq(3)
-      expect(calls).to be_all { |env| env[:body] == body }
+      expect(calls).to(be_all { |env| env[:body] == body })
     end
 
     it 'does not retry if retry_if block returns false checking env' do
@@ -286,7 +286,7 @@ RSpec.describe Faraday::Retry::Middleware do
 
       it { expect(times_called).to eq(1) }
 
-      context 'and retry_block is set' do
+      context 'when retry_block is set' do
         let(:options) do
           [{
             retry_block: ->(**kwargs) { retry_block_calls << kwargs },
