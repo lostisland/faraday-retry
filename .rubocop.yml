@@ -17,6 +17,9 @@ AllCops:
   SuggestExtensions: false
   NewCops: enable
 
+Metrics/ClassLength:
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb
