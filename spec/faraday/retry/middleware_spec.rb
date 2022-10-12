@@ -172,7 +172,7 @@ RSpec.describe Faraday::Retry::Middleware do
       @check = ->(_, _) { true }
       expect { conn.post('/unstable', body) }.to raise_error(Errno::ETIMEDOUT)
       expect(times_called).to eq(3)
-      expect(calls).to be_all { |env| env[:body] == body }
+      expect(calls).to(be_all { |env| env[:body] == body })
     end
 
     it 'does not retry if retry_if block returns false checking env' do
