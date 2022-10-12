@@ -213,7 +213,7 @@ module Faraday
       end
 
       # RFC for RateLimit Header Fields for HTTP:
-      # https://tools.ietf.org/id/draft-polli-ratelimit-headers-00.html#rfc.section.3.3
+      # https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-05.html#name-fields-definition
       def calculate_rate_limit_reset(env)
         parse_retry_header(env, 'RateLimit-Reset')
       end
