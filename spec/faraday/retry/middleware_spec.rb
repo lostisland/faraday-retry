@@ -245,6 +245,20 @@ RSpec.describe Faraday::Retry::Middleware do
       conn.get('/unstable')
     end
 
+    context 'when custom retry header is set' do
+      let(:headers) { { 'x-retry-after' => '0.5' } }
+      let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504, rate_limit_retry_header: 'x-retry-after' }] }
+
+      it { expect(elapsed).to be > 0.5 }
+    end
+
+    context 'when custom reset header is set' do
+      let(:headers) { { 'x-reset-after' => '0.5' } }
+      let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504, rate_limit_reset_header: 'x-reset-after' }] }
+
+      it { expect(elapsed).to be > 0.5 }
+    end
+
     context 'when Retry-After bigger than RateLimit-Reset' do
       let(:headers) { { 'Retry-After' => '0.5', 'RateLimit-Reset' => '0.1' } }
       let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504 }] }
