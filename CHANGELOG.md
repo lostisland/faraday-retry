@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added 
+
+* Support for custom RateLimit headers. [PR #13](https://github.com/lostisland/faraday-retry/pull/13). Thanks, [@brookemckim]! 
+
 ## v2.0.0 (2022-06-08)
 
 ### Changed
@@ -22,3 +28,4 @@ This release consists of the same middleware that was previously bundled with Fa
 *  Retry middleware `retry_block` is not called if retry will not happen due to `max_interval`, https://github.com/lostisland/faraday/pull/1350
 
 [@maxprokopiev]: https://github.com/maxprokopiev
+[@brookemckim]: https://github.com/brookemckim
