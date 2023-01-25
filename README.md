@@ -111,7 +111,7 @@ retry_options = {
 }
 ```
 
-If you are working with an API which does not comply with the Rate Limit RFC you can specify custom headers to be used for rety and reset.
+If you are working with an API which does not comply with the Rate Limit RFC you can specify custom headers to be used for retry and reset.
 
 ```ruby
 retry_options = {
