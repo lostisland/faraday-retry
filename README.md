@@ -1,6 +1,6 @@
 # Faraday Retry
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lostisland/faraday-retry/CI)](https://github.com/lostisland/faraday-retry/actions?query=branch%3Amain)
+[![CI](https://github.com/lostisland/faraday-retry/actions/workflows/ci.yaml/badge.svg)](https://github.com/lostisland/faraday-retry/actions/workflows/ci.yaml)
 [![Gem](https://img.shields.io/gem/v/faraday-retry.svg?style=flat-square)](https://rubygems.org/gems/faraday-retry)
 [![License](https://img.shields.io/github/license/lostisland/faraday-retry.svg?style=flat-square)](LICENSE.md)
 
