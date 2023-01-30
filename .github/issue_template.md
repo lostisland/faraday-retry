@@ -14,7 +14,7 @@ Ruby Version: 2.7.4
 
 ### Steps to reproduce
 
-````
+```ruby
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
