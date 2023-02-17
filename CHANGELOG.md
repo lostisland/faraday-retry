@@ -2,9 +2,9 @@
 
 ## Unreleased
 
-### Added 
+### Added
 
-* Support for custom RateLimit headers. [PR #13](https://github.com/lostisland/faraday-retry/pull/13). Thanks, [@brookemckim]! 
+* Support for custom RateLimit headers. [PR #13](https://github.com/lostisland/faraday-retry/pull/13). Thanks, [@brookemckim]!
 
 ## v2.0.0 (2022-06-08)
 
