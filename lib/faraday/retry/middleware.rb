@@ -27,7 +27,7 @@ module Faraday
                                            :backoff_factor, :exceptions,
                                            :methods, :retry_if, :retry_block,
                                            :retry_statuses, :rate_limit_retry_header,
-                                           :rate_limit_reset_header)
+                                           :rate_limit_reset_header, :header_parser_block)
 
         DEFAULT_CHECK = ->(_env, _exception) { false }
 
@@ -120,6 +120,10 @@ module Faraday
       #   codes or a single Integer value that determines whether to raise
       #   a Faraday::RetriableResponse exception based on the HTTP status code
       #   of an HTTP response.
+      # @option options [Block] :header_parser_block block that will receive
+      #   the the value of the retry header and should return the number of
+      #   seconds to wait before retrying the request. This is useful if the
+      #   value of the header is not a number of seconds or a RFC 2822 formatted date.
       def initialize(app, options = nil)
         super(app)
         @options = Options.from(options)
@@ -244,12 +248,16 @@ module Faraday
 
         retry_after_value = env[:response_headers][header]
 
-        # Try to parse date from the header value
-        begin
-          datetime = DateTime.rfc2822(retry_after_value)
-          datetime.to_time - Time.now.utc
-        rescue ArgumentError
-          retry_after_value.to_f
+        if @options.header_parser_block
+          @options.header_parser_block.call(retry_after_value)
+        else
+          # Try to parse date from the header value
+          begin
+            datetime = DateTime.rfc2822(retry_after_value)
+            datetime.to_time - Time.now.utc
+          rescue ArgumentError
+            retry_after_value.to_f
+          end
         end
       end
     end
