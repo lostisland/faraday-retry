@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.2.0 (2023-06-01)
+
+* Support new `header_parser_block` option. [PR #28](https://github.com/lostisland/faraday-retry/pull/28). Thanks, [@zavan]!
+
 ## v2.1.0 (2023-03-03)
 
 * Support for custom RateLimit headers. [PR #13](https://github.com/lostisland/faraday-retry/pull/13). Thanks, [@brookemckim]!
@@ -29,3 +33,4 @@ This release consists of the same middleware that was previously bundled with Fa
 
 [@maxprokopiev]: https://github.com/maxprokopiev
 [@brookemckim]: https://github.com/brookemckim
+[@zavan]: https://github.com/zavan
