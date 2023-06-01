@@ -294,6 +294,13 @@ RSpec.describe Faraday::Retry::Middleware do
       it { expect(elapsed).to be > 1 }
     end
 
+    context 'when custom header_parser_block is set' do
+      let(:headers) { { 'Retry-After' => '0.1', 'RateLimit-Reset' => (Time.now.utc + 2).to_i.to_s } }
+      let(:options) { [{ max: 1, interval: 0.1, retry_statuses: 504, header_parser_block: ->(value) { Time.at(value.to_i).utc - Time.now.utc } }] }
+
+      it { expect(elapsed).to be > 1 }
+    end
+
     context 'when retry_after is bigger than max_interval' do
       let(:headers) { { 'Retry-After' => (Time.now.utc + 20).strftime('%a, %d %b %Y %H:%M:%S GMT') } }
       let(:options) { [{ max: 2, interval: 0.1, max_interval: 5, retry_statuses: 504 }] }

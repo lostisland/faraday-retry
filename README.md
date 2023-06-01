@@ -111,13 +111,14 @@ retry_options = {
 }
 ```
 
-If you are working with an API which does not comply with the Rate Limit RFC you can specify custom headers to be used for retry and reset.
+If you are working with an API which does not comply with the Rate Limit RFC you can specify custom headers to be used for retry and reset, as well as a block to parse the headers:
 
 ```ruby
 retry_options = {
   retry_statuses: [429],
   rate_limit_retry_header: 'x-rate-limit-retry-after',
-  rate_limit_reset_header: 'x-rate-limit-reset'
+  rate_limit_reset_header: 'x-rate-limit-reset',
+  header_parser_block: ->(value) { Time.at(value.to_i).utc - Time.now.utc }
 }
 ```
 
