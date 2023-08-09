@@ -95,8 +95,8 @@ module Faraday
       #   'Timeout::Error', Faraday::TimeoutError, Faraday::RetriableResponse])
       #   The list of exceptions to handle. Exceptions can be given as
       #   Class, Module, or String.
-      # @option options [Array] :methods (the idempotent HTTP methods
-      #   in IDEMPOTENT_METHODS) A list of HTTP methods to retry without
+      # @option options [Array<Symbol>] :methods (the idempotent HTTP methods
+      #   in IDEMPOTENT_METHODS) A list of HTTP methods, as symbols, to retry without
       #   calling retry_if. Pass an empty Array to call retry_if
       #   for all exceptions.
       # @option options [Block] :retry_if (false) block that will receive
