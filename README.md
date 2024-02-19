@@ -75,7 +75,7 @@ retry_options = {
 #### Specify which exceptions should trigger a retry
 
 You can provide an `exceptions` option with a list of exceptions that will replace
-the default list of network-related exceptions: `Errno::ETIMEDOUT`, `Timeout::Error`, `Faraday::TimeoutError`.
+the default exceptions: `Errno::ETIMEDOUT`, `Timeout::Error`, `Faraday::TimeoutError`, `Faraday::Error::RetriableResponse`.
 This can be particularly useful when combined with the [RaiseError][raise_error] middleware.
 
 ```ruby
@@ -144,9 +144,7 @@ retry_options = {
 You can specify a proc object through the `retry_block` option that will be called before every
 retry, before  There are many different applications for this feature, spacing from instrumentation to monitoring.
 
-
 The block is passed keyword arguments with contextual information: Request environment, middleware options, current number of retries, exception, and amount of time we will wait before retrying. (retry_block is called before the wait time happens)
-
 
 For example, you might want to keep track of the response statuses:
 
