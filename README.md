@@ -84,6 +84,14 @@ retry_options = {
 }
 ```
 
+If you want to inherit default exceptions, do it this way.
+
+```ruby
+retry_options = {
+  exceptions: Faraday::Retry::Middleware::DEFAULT_EXCEPTIONS + [Faraday::ResourceNotFound, Faraday::UnauthorizedError]
+}
+```
+
 #### Specify on which response statuses to retry
 
 By default the `Retry` middleware will only retry the request if one of the expected exceptions arise.
