@@ -209,11 +209,11 @@ module Faraday
       end
 
       def rewind_files(body)
-        return unless defined?(UploadIO)
+        return unless defined?(Faraday::UploadIO)
         return unless body.is_a?(Hash)
 
         body.each do |_, value|
-          value.rewind if value.is_a?(UploadIO)
+          value.rewind if value.is_a?(Faraday::UploadIO)
         end
       end
 
