@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+* Avoid deprecation warning about ::UploadIO constant when used without faraday-multipart gem [PR #37](https://github.com/lostisland/faraday-retry/pull/37) [@iMacTia]
+* Documentation update [PR #30](https://github.com/lostisland/faraday-retry/pull/30) [@olleolleolle]
+* Documentation update [PR #32](https://github.com/lostisland/faraday-retry/pull/32) Thanks, [@Drowze]!
+
 ## v2.2.0 (2023-06-01)
 
 * Support new `header_parser_block` option. [PR #28](https://github.com/lostisland/faraday-retry/pull/28). Thanks, [@zavan]!
@@ -34,3 +40,6 @@ This release consists of the same middleware that was previously bundled with Fa
 [@maxprokopiev]: https://github.com/maxprokopiev
 [@brookemckim]: https://github.com/brookemckim
 [@zavan]: https://github.com/zavan
+[@Drowze]: https://github.com/Drowze
+[@olleolleolle]: https://github.com/olleolleolle
+[@iMacTia]: https://github.com/iMacTia
