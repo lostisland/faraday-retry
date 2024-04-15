@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+_nothing yet_
+
+## v2.2.1 (2024-04-15)
+
 * Avoid deprecation warning about ::UploadIO constant when used without faraday-multipart gem [PR #37](https://github.com/lostisland/faraday-retry/pull/37) [@iMacTia]
 * Documentation update [PR #30](https://github.com/lostisland/faraday-retry/pull/30) [@olleolleolle]
 * Documentation update [PR #32](https://github.com/lostisland/faraday-retry/pull/32) Thanks, [@Drowze]!
