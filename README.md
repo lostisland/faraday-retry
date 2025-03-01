@@ -149,8 +149,8 @@ retry_options = {
 
 ### Call a block on every retry
 
-You can specify a proc object through the `retry_block` option that will be called before every
-retry, before  There are many different applications for this feature, spacing from instrumentation to monitoring.
+You can specify a proc object through the `retry_block` option that will be called before every retry.
+There are many different applications for this feature, ranging from instrumentation to monitoring.
 
 The block is passed keyword arguments with contextual information: Request environment, middleware options, current number of retries, exception, and amount of time we will wait before retrying. (retry_block is called before the wait time happens)
 
