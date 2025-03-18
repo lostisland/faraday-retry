@@ -107,6 +107,34 @@ RSpec.describe Faraday::Retry::Middleware do
         it { expect(retry_block_calls[1][:retry_count]).to eq 1 }
       end
     end
+
+    context 'when exhausted_retries_block is set' do
+      let(:number_box) { [] }
+      let(:logic) { ->(number: 1, env:, exception:, options:) { number_box.push(number) } }
+      let(:options) do
+        [
+          {
+            exhausted_retries_block: logic,
+            max: 2
+          }
+        ]
+      end
+
+      describe 'with arguments to retry_block' do
+        let(:exhausted_retries_block_calls) { [] }
+        let(:options) { [{ exhausted_retries_block: ->(**kwargs) { exhausted_retries_block_calls << kwargs } }] }
+
+        it { expect(exhausted_retries_block_calls.first[:exception]).to be_kind_of(Errno::ETIMEDOUT) }
+        it { expect(exhausted_retries_block_calls.first[:options]).to be_kind_of(Faraday::Options) }
+        it { expect(exhausted_retries_block_calls.first[:env]).to be_kind_of(Faraday::Env) }
+      end
+
+      it 'calls exhausted_retries_block block once when retries are exhausted' do
+        expect(number_box).to eq([1])
+      end
+
+      it { expect(times_called).to eq(options.first[:max] + 1) }
+    end
   end
 
   context 'when no exception raised' do
