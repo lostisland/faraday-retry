@@ -27,7 +27,8 @@ module Faraday
                                            :backoff_factor, :exceptions,
                                            :methods, :retry_if, :retry_block,
                                            :retry_statuses, :rate_limit_retry_header,
-                                           :rate_limit_reset_header, :header_parser_block)
+                                           :rate_limit_reset_header, :header_parser_block,
+                                           :exhausted_retries_block)
 
         DEFAULT_CHECK = ->(_env, _exception) { false }
 
@@ -78,6 +79,10 @@ module Faraday
         def retry_statuses
           Array(self[:retry_statuses] ||= [])
         end
+
+        def exhausted_retries_block
+          self[:exhausted_retries_block] ||= proc {}
+        end
       end
 
       # @param app [#call]
@@ -124,6 +129,15 @@ module Faraday
       #   the the value of the retry header and should return the number of
       #   seconds to wait before retrying the request. This is useful if the
       #   value of the header is not a number of seconds or a RFC 2822 formatted date.
+      # @option options [Block] :exhausted_retries_block block will receive
+      #   when all attempts are exhausted. The block will be yielded keyword arguments:
+      #     * any args [Hash]: Anything you need to solve the problem.
+      #       The transferred hash will be available in the block with a simple call.
+      #     * env [Faraday::Env]: Request environment
+      #     * exception [Exception]: exception that triggered the retry,
+      #       will be the synthetic `Faraday::RetriableResponse` if the
+      #       retry was triggered by something other than an exception.
+      #     * options [Faraday::Options]: middleware options
       def initialize(app, options = nil)
         super(app)
         @options = Options.from(options)
@@ -154,6 +168,14 @@ module Faraday
             raise Faraday::RetriableResponse.new(nil, resp) if @options.retry_statuses.include?(resp.status)
           end
         rescue @errmatch => e
+          if retries.zero? && retry_request?(env, e)
+            @options.exhausted_retries_block.call(
+              env: env,
+              exception: e,
+              options: @options
+            )
+          end
+
           if retries.positive? && retry_request?(env, e)
             retries -= 1
             rewind_files(request_body)

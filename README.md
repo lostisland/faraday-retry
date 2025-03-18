@@ -163,6 +163,27 @@ retry_options = {
 }
 ```
 
+### Call a block after retries have been exhausted
+
+You can specify a lambda object through the `exhausted_retries_block` option that will be called after all retries are exhausted.
+This block will called once.
+
+The block is passed keyword arguments with contextual information and passed your data:
+* Request environment,
+* exception,
+* middleware options
+* and your data.
+
+In a lambda you can passed any logic for further work.
+
+For example, you might want to update user by request query.
+
+```ruby
+retry_options = {
+  exhausted_retries_block: -> (user_id:, env:, exception:, options:) { User.find_by(id: user_id).do_admin! }
+}
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies.
