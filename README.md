@@ -166,7 +166,7 @@ retry_options = {
 ### Call a block after retries have been exhausted
 
 You can specify a lambda object through the `exhausted_retries_block` option that will be called after all retries are exhausted.
-This block will called once.
+This block will be called once.
 
 The block is passed keyword arguments with contextual information and passed your data:
 * Request environment,
