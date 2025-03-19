@@ -131,8 +131,6 @@ module Faraday
       #   value of the header is not a number of seconds or a RFC 2822 formatted date.
       # @option options [Block] :exhausted_retries_block block will receive
       #   when all attempts are exhausted. The block will be yielded keyword arguments:
-      #     * any args [Hash]: Anything you need to solve the problem.
-      #       The transferred hash will be available in the block with a simple call.
       #     * env [Faraday::Env]: Request environment
       #     * exception [Exception]: exception that triggered the retry,
       #       will be the synthetic `Faraday::RetriableResponse` if the
