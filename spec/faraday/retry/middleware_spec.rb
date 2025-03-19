@@ -109,8 +109,8 @@ RSpec.describe Faraday::Retry::Middleware do
     end
 
     context 'when exhausted_retries_block is set' do
-      let(:number_box) { [] }
-      let(:logic) { ->(number: 1, env:, exception:, options:) { number_box.push(number) } }
+      let(:numbers) { [] }
+      let(:logic) { ->(number: 1, env:, exception:, options:) { numbers.push(number) } }
       let(:options) do
         [
           {
@@ -130,7 +130,7 @@ RSpec.describe Faraday::Retry::Middleware do
       end
 
       it 'calls exhausted_retries_block block once when retries are exhausted' do
-        expect(number_box).to eq([1])
+        expect(numbers).to eq([1])
       end
 
       it { expect(times_called).to eq(options.first[:max] + 1) }
