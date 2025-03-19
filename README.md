@@ -174,13 +174,13 @@ The block is passed keyword arguments with contextual information and passed you
 * middleware options
 * and your data.
 
-In a lambda you can passed any logic for further work.
+In a lambda you can pass any logic for further work.
 
 For example, you might want to update user by request query.
 
 ```ruby
 retry_options = {
-  exhausted_retries_block: -> (user_id:, env:, exception:, options:) { User.find_by(id: user_id).do_admin! }
+  exhausted_retries_block: -> (user_id:, env:, exception:, options:) { User.find_by!(id: user_id).do_admin! }
 }
 ```
 
