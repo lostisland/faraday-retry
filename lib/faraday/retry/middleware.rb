@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'retryable'
+
 module Faraday
   module Retry
     # This class provides the main implementation for your middleware.
@@ -15,6 +17,8 @@ module Faraday
     #   (see "retry" middleware: https://github.com/lostisland/faraday/blob/main/lib/faraday/request/retry.rb#L142).
     #   IMPORTANT: Remember to call `@app.call(env)` or `super` to not interrupt the middleware chain!
     class Middleware < Faraday::Middleware
+      include Retryable
+
       DEFAULT_EXCEPTIONS = [
         Errno::ETIMEDOUT, 'Timeout::Error',
         Faraday::TimeoutError, Faraday::RetriableResponse
@@ -159,40 +163,14 @@ module Faraday
       def call(env)
         retries = @options.max
         request_body = env[:body]
-        begin
+
+        with_retries(env: env, options: @options, retries: retries, body: request_body, errmatch: @errmatch) do
           # after failure env[:body] is set to the response body
           env[:body] = request_body
+
           @app.call(env).tap do |resp|
             raise Faraday::RetriableResponse.new(nil, resp) if @options.retry_statuses.include?(resp.status)
           end
-        rescue @errmatch => e
-          if retries.zero? && retry_request?(env, e)
-            @options.exhausted_retries_block.call(
-              env: env,
-              exception: e,
-              options: @options
-            )
-          end
-
-          if retries.positive? && retry_request?(env, e)
-            retries -= 1
-            rewind_files(request_body)
-            if (sleep_amount = calculate_sleep_amount(retries + 1, env))
-              @options.retry_block.call(
-                env: env,
-                options: @options,
-                retry_count: @options.max - (retries + 1),
-                exception: e,
-                will_retry_in: sleep_amount
-              )
-              sleep sleep_amount
-              retry
-            end
-          end
-
-          raise unless e.is_a?(Faraday::RetriableResponse)
-
-          e.response
         end
       end
 

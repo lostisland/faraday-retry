@@ -112,7 +112,7 @@ RSpec.describe Faraday::Retry::Middleware do
       let(:numbers) { [] }
 
       # The required arguments are env, exception and options, but we may add more, if we supply a default value.
-      let(:logic) { ->(number: 1, env:, exception:, options:) { numbers.push(number) } }
+      let(:logic) { ->(number: 1, **) { numbers.push(number) } }
       let(:options) do
         [
           {
