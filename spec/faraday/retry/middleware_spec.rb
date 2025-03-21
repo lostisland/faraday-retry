@@ -122,7 +122,7 @@ RSpec.describe Faraday::Retry::Middleware do
         ]
       end
 
-      describe 'with arguments to retry_block' do
+      describe 'with arguments to exhausted_retries_block' do
         let(:exhausted_retries_block_calls) { [] }
         let(:options) { [{ exhausted_retries_block: ->(**kwargs) { exhausted_retries_block_calls << kwargs } }] }
 
