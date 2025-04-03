@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Adds the ability to retry a request based on settings and errors that have occurred.
 module Faraday
+  # Adds the ability to retry a request based on settings and errors that have occurred.
   module Retryable
     def with_retries(env:, options:, retries:, body:, errmatch:)
       yield
