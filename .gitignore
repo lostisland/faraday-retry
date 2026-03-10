@@ -12,6 +12,5 @@ tmp/
 Gemfile.lock
 
 .rvmrc
-.ruby-version
 
 .rspec_status
